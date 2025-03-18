@@ -41,8 +41,8 @@ Build a web application that assists users in designing their own database schem
 
 ## Resources
 - **Design Guidelines:**  
-  Review the design specifications at: [Figma Design Guidelines](https://www.figma.com/design/8ebbsZw1iDQVUKsCOxWgZV/Full-Stack-Dev-Test?node-id=0-1)
-
+  Review the design specifications at: [Figma Design Guidelines](https://www.figma.com/design/sTaho4kTFib0OmS5Q1H3pd/Full-Stack-Test)
+  
 - **AI Models & Documentation:**  
   Use any LLM provider of your choice. Research API documentation and sample projects to integrate AI features effectively.
 
