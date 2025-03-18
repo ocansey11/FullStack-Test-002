@@ -55,7 +55,7 @@ Build a web application that assists users in designing their own database schem
   - Ensure your repository includes the complete source code and documentation.
 
 - **Delivery:**  
-  - Submit your project's github link to Emmanuel (Whatsapp - +18033876281).
+  - Submit your project's github link(s) to Emmanuel (Whatsapp - +18033876281).
 
 - **Deadline:**  
-  Friday, March 21, 12:59 PM GMT
+  Saturday, March 22, 12:59 PM GMT
