@@ -49,13 +49,21 @@ Build a web application that assists users in designing their own database schem
 - **Help:**  
   You can use any AI model, stack overflow, etc to help you complete the test. Actually, we encourage it. It shows your resourcefulness & the end product is what matters!
 
-## Submission
-- **Repository:**  
-  - Host your project on GitHub. You can host them as separate repositories, the frontend and the backend.
-  - Ensure your repository includes the complete source code and documentation.
+## Submission Instructions
+1. **Repository:**  
+   Create your own GitHub repositories for the project.
 
-- **Delivery:**  
-  - Submit your project's github link(s) to Emmanuel (Whatsapp - +18033876281).
+2. **Submission Details:**  
+   Send a WhatsApp DM to **+1 803 387 6281** containing:
+   - The URL of your GitHub repositories.
+   - Your full name.
+
+3. **Talent Profile Requirement:**  
+   Complete your talent profile sign-up on [gigsama.com](https://gigsama.com) **before** submitting your project.
 
 - **Deadline:**  
   Saturday, March 22, 12:59 PM GMT
+
+---
+
+For any questions or clarifications, please reach out via WhatsApp at **+1 803 387 6281**.
