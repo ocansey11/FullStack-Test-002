@@ -1,6 +1,0 @@
-fastapi
-uvicorn
-smol-dev
-httpx
-python-dotenv
-smolagents
