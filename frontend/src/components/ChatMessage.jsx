@@ -1,30 +1,3 @@
-// // src/components/ChatMessage.jsx
-// import React from "react";
-
-// const ChatMessage = ({ role, content }) => {
-//   const isUser = role === "user";
-//   const isAssistant = role === "assistant";
-//   // const isSystem = role === "system";
-
-//   // Style definitions
-//   const baseStyles = "max-w-xl px-4 py-2 rounded-lg text-sm sm:text-base";
-//   const roleStyles = isUser
-//     ? "ml-auto bg-blue-600 text-white"
-//     // : isSystem
-//     // ? "mx-auto bg-gray-200 text-gray-600 italic"
-//     : "mr-auto bg-gray-100 text-gray-900";
-
-//   return (
-//     <div className={`${baseStyles} ${roleStyles}`}>
-//       {content}
-//     </div>
-//   );
-// };
-
-// export default ChatMessage;
-
-
-// src/components/ChatMessage.jsx
 import React from "react";
 
 const ChatMessage = ({ role, content }) => {
@@ -34,8 +7,8 @@ const ChatMessage = ({ role, content }) => {
   // Return different message layouts based on role
   if (isUser) {
     return (
-      <div className="flex justify-end mb-4">
-        <div className="max-w-xl px-4 py-2 rounded-lg bg-blue-600 text-white">
+      <div className="flex justify-end">
+        <div className="bg-green-500 text-black px-4 py-2 my-2 rounded-xl max-w-[70%] shadow-md">
           {content}
         </div>
       </div>
@@ -44,8 +17,8 @@ const ChatMessage = ({ role, content }) => {
   
   if (isAssistant) {
     return (
-      <div className="flex justify-start mb-4">
-        <div className="max-w-xl px-4 py-2 rounded-lg bg-gray-100 text-gray-900">
+      <div className="flex justify-start">
+        <div className="bg-blue-500 text-white px-4 py-2 my-2 rounded-xl max-w-[70%] shadow">
           {content}
         </div>
       </div>
@@ -55,7 +28,7 @@ const ChatMessage = ({ role, content }) => {
   // For system messages or any other type (optional)
   return (
     <div className="flex justify-center mb-4">
-      <div className="max-w-xl px-4 py-2 rounded-lg bg-gray-200 text-gray-600 italic">
+      <div className="">
         {content}
       </div>
     </div>

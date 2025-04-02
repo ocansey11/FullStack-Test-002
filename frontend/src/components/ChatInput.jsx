@@ -12,12 +12,12 @@ const ChatInput = ({ onSend }) => {
   };
 
   return (
-    <div className="fixed bottom-6  flex justify-center">
+    <div className="w-full flex justify-center px-6 pb-6">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-lg mx-auto px-4"
+        className="w-full max-w-3xl mx-auto px-4"
       >
-        <div className="w-full flex items-center bg-white rounded-full shadow-sm border border-gray-200 py-3 px-4">
+        <div className="flex items-center bg-white rounded-full shadow-sm border border-gray-200 py-2 px-4">
           <input
             type="text"
             value={message}
@@ -28,11 +28,10 @@ const ChatInput = ({ onSend }) => {
           />
           <button
             type="submit"
-            className="ml-2 p-2 rounded-full bg-black text-white hover:bg-gray-800 focus:outline-none"
+            className="rounded-lg  text-black px-4 py-2 hover:bg-blue-600 transition duration-200"
             aria-label="Send message"
           >
-             {/* The submitt will be a logo of an enter button */}
-            Submitt 
+             <i class="fa-regular fa-paper-plane"></i>
           </button>
         </div>
       </form>

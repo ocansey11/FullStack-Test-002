@@ -1,60 +1,62 @@
 // src/components/Sidebar.jsx
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getAllProjects } from "../lib/api";
+import SidebarItem from "./SidebarItem";
+import { FaBars, FaPlus, FaXmark } from "react-icons/fa6";
 
 const Sidebar = ({ isOpen, onToggle, projectId }) => {
+  const [projects, setProjects] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getAllProjects().then(setProjects).catch(console.error);
+  }, []);
+
   if (!isOpen) {
     return (
       <button
         onClick={onToggle}
-        className="absolute top-20 left-2 z-20 p-2 bg-gray-200 rounded hover:bg-gray-300 text-sm"
+        className="p-2 bg-gray-100 hover:bg-gray-200 rounded shadow ml-2 mt-2"
+        aria-label="Open Sidebar"
       >
-        ➤ Open
+        <FaBars />
       </button>
     );
   }
 
   return (
-    <aside className="w-[30%] min-w-[240px] max-w-sm bg-gray-100 border-r border-gray-200 h-full flex flex-col p-4 relative">
-      {/* Close Button */}
+    <aside className="w-[15%] min-w-[240px] max-w-sm bg-gray-100 shadow-[4px_0_10px_rgba(0,0,0,0.1)] h-full flex flex-col p-4">
       <button
         onClick={onToggle}
-        className="absolute top-4 right-4 text-gray-600 hover:text-black"
+        className="self-end mb-4 p-2 hover:bg-gray-200 rounded"
         aria-label="Close Sidebar"
       >
-        ✕
+        <FaXmark />
       </button>
 
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Projects</h2>
-
-      <Link
-        to="/"
-        className="mb-4 inline-block text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
-      >
-        + New Project
-      </Link>
-
-      <nav className="flex-1 overflow-y-auto space-y-2 text-sm">
-        <Link
-          to="/conversation/project-1"
-          className={`block px-3 py-2 rounded-md ${
-            projectId === "project-1"
-              ? "bg-black text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
+      <div className="text-lg font-semibold mb-4 flex items-center justify-between">
+        <span>My Projects</span>
+        <button
+          onClick={() => navigate("/")}
+          className="p-1 hover:bg-gray-200 rounded"
+          title="New Project"
         >
-          Project 1
-        </Link>
-        <Link
-          to="/conversation/project-2"
-          className={`block px-3 py-2 rounded-md ${
-            projectId === "project-2"
-              ? "bg-black text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-        >
-          Project 2
-        </Link>
+          <FaPlus className="text-sm text-gray-600 hover:text-black" />
+        </button>
+      </div>
+
+      <nav className="flex-1 overflow-y-auto space-y-1 text-sm">
+        {projects.map((project) => (
+          <Link key={project.id} to={`/conversation/${project.id}`}>
+            <SidebarItem
+              text={project.preview}
+              active={projectId === project.id}
+              alert={false}
+              expanded={isOpen}
+            />
+          </Link>
+        ))}
       </nav>
     </aside>
   );

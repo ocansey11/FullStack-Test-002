@@ -1,5 +1,8 @@
 // src/App.jsx
 import React from "react";
+// main.jsx or App.jsx
+import './index.css';
+
 import { Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
@@ -17,3 +20,4 @@ const App = () => {
 };
 
 export default App;
+
