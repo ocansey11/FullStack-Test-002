@@ -1,10 +1,10 @@
+# app/core/schema_agent.py
 import os
-import json
 from dotenv import load_dotenv
-
 from llama_index.llms.openai import OpenAI as LlamaOpenAI
 from llama_index.core.chat_engine import SimpleChatEngine
 from llama_index.core.chat_engine.types import ChatMessage
+
 from llama_index.core import Document
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.ingestion import IngestionPipeline
@@ -12,56 +12,49 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.vector_stores.chroma import ChromaVectorStore
 import chromadb
 
-# Load environment variables
-load_dotenv()
-
-# Paths
-message_path = "app/data/messages.json"
-db_path = "app/db/alfred_chroma_db"
-
-# Setup LLM
-llm = LlamaOpenAI(model="gpt-3.5-turbo")
-
-# Ensure messages.json exists
-if not os.path.exists(message_path):
-    os.makedirs(os.path.dirname(message_path), exist_ok=True)
-    with open(message_path, "w") as f:
-        json.dump([], f)
-
-# Load chat history
-with open(message_path, "r") as f:
-    raw_messages = json.load(f)
-
-# Convert to LlamaIndex message format
-chat_history = [
-    ChatMessage(role=m["role"], content=m["content"]) for m in raw_messages
-]
-
-# Setup chat engine (no retriever needed)
-chat_engine = SimpleChatEngine.from_defaults(
-    llm=llm,
-    chat_history=chat_history
+from app.core.project_manager import (
+    generate_new_project_id,
+    load_messages,
+    save_messages
 )
 
-def process_user_message(user_message: str) -> str:
-    # Run the chat engine
+load_dotenv()
+
+db_path = "app/db/alfred_chroma_db"
+
+llm = LlamaOpenAI(model="gpt-3.5-turbo")
+
+def process_user_message(user_message: str, project_id: str | None = None) -> tuple[str, str]:
+    # 📁 Init project ID if needed
+    if not project_id:
+        project_id = generate_new_project_id()
+
+    # 📄 Load messages
+    messages = load_messages(project_id)
+    if not messages:
+        messages = [{
+            "role": "system",
+            "content": "You are an expert assistant helping users design database schemas."
+        }]
+
+    # 🧠 Build chat history for LlamaIndex
+    chat_history = [ChatMessage(role=m["role"], content=m["content"]) for m in messages]
+
+    # 💬 Chat
+    chat_engine = SimpleChatEngine.from_defaults(llm=llm, chat_history=chat_history)
     response = chat_engine.chat(user_message)
 
-    # Append new user & assistant messages
-    raw_messages.append({"role": "user", "content": user_message})
-    raw_messages.append({"role": "assistant", "content": str(response)})
+    # 💾 Update & save conversation
+    messages.append({"role": "user", "content": user_message})
+    messages.append({"role": "assistant", "content": str(response)})
+    save_messages(project_id, messages)
 
-    # Save updated messages
-    with open(message_path, "w") as f:
-        json.dump(raw_messages, f, indent=2)
-
-    # --- Vector Ingestion Section ---
-    latest_turns = raw_messages[-2:]
-    docs = [Document(text=m["content"]) for m in latest_turns]
+    # 📚 Ingest last turn into vector store
+    docs = [Document(text=m["content"]) for m in messages[-2:]]
 
     embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
     db = chromadb.PersistentClient(path=db_path)
-    chroma_collection = db.get_or_create_collection("alfred")
+    chroma_collection = db.get_or_create_collection(project_id)
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 
     pipeline = IngestionPipeline(
@@ -74,4 +67,4 @@ def process_user_message(user_message: str) -> str:
 
     pipeline.run(documents=docs)
 
-    return str(response)
+    return str(response), project_id
